@@ -1,12 +1,10 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux';
-import { useActions } from '../hooks/use-actions'
+import { useSelector, useActions } from '../hooks/';
 
 const RepositoriesList: React.FC = () => {
   const [term, setTerm] = useState('')
   const { searchRepos } = useActions()
-  const state = useSelector((state: any) => state.repos.repos
-  console.log(state)
+  const { repos, error, loading } = useSelector((state) => state.repos)
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -19,6 +17,9 @@ const RepositoriesList: React.FC = () => {
         <input value={term} onChange={e => setTerm(e.target.value)}/>
         <button>Search</button>
       </form>
+      {error && <h3>{error}</h3>}
+      {loading && <h3>Loading...</h3>}
+      {!error && !loading && repos.map(r => <div>{r}</div>)}
     </div>
   )
 }
